@@ -1,0 +1,18 @@
+# recordings and transcripts are private: never commit them
+recordings/
+*.wav
+*_transcript.txt
+
+# python
+__pycache__/
+*.pyc
+
+# editor and backup leftovers
+*.bak
+*.bak*
+*.tmp
+.vscode/
+.idea/
+
+# local release builds
+dist/
