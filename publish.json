@@ -1,6 +1,6 @@
 {
   "repo": "datonko-gi/audiotap",
-  "description": "Windows call recorder for Zoom, Teams and Google Meet. Records system audio (WASAPI loopback) and your microphone as two separate tracks, then transcribes locally with faster-whisper. Python app with a PowerShell desktop widget. Offline and private.",
+  "description": "Windows call recorder for Zoom, Teams and Google Meet. Records system audio (WASAPI loopback) and your microphone as two separate tracks, then transcribes locally with faster-whisper. Python app with a PowerShell desktop widget. Runs locally, your audio stays on your PC.",
   "topics": [
     "call-recorder",
     "meeting-recorder",

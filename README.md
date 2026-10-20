@@ -1,6 +1,6 @@
 # AudioTap: Windows Call Recorder with Local Transcription
 
-AudioTap is a Windows call recorder for Zoom, Microsoft Teams and Google Meet. It records system audio (WASAPI loopback) and your microphone as two separate tracks, then transcribes both locally with faster-whisper, so every line of the transcript is attributed to you or to the other side without guessing who is speaking. It works offline and keeps recordings on your own disk, for anyone who wants recordings and searchable transcripts of their own calls, such as interviews, sales calls and meetings, without uploading audio to a cloud service.
+AudioTap is a Windows call recorder for Zoom, Microsoft Teams and Google Meet. It records system audio (WASAPI loopback) and your microphone as two separate tracks, then transcribes both locally with faster-whisper, so every line of the transcript is attributed to you or to the other side without guessing who is speaking. It runs locally and keeps recordings on your own disk, for anyone who wants recordings and searchable transcripts of their own calls, such as interviews, sales calls and meetings, without uploading audio to a cloud service.
 
 A small desktop widget starts and stops recordings. A Python app does the capture, mixing and transcription. Built with Python and PowerShell (WinForms). No cloud account, no API key.
 
@@ -49,6 +49,7 @@ The widget:
 - Drag the widget to move it. The position is saved.
 - Right-click for the menu: **Output device** (all devices or one specific device), **Record microphone** (on or off), **Open recordings folder**, **Close widget**.
 - The button turns amber when the output tap has heard nothing for 30 seconds, and shows **STOPPED** if the recorder process has died.
+- A recording started from the widget stops by itself after 4 hours: the widget starts the recorder with `--seconds 14400` (`$HARDCAP` in `widget\audiotap-widget.ps1`). To record longer, use `app\record-call.bat`, which has no time limit, or run `python app\audiotap.py --mic --seconds 28800` with your own limit, and stop it with Ctrl+C or `app\stop.bat`.
 
 ![Widget states: recording, no sound, mixing, stopped](docs/state-states.png)
 
@@ -111,6 +112,7 @@ transcribe.py     faster-whisper on each track, merge on timestamps, drop echo
 ```
 
 - The recorder opens every WASAPI loopback endpoint through PyAudioWPatch and a silent keep-alive stream on each, because loopback delivers no buffers while nothing plays and idle stretches would otherwise vanish from the timeline. The keep-alive is inaudible.
+- While it records, the recorder keeps the PC awake (`SetThreadExecutionState`) and releases that when it exits.
 - The widget and the recorder talk through `status.json` (written twice a second while recording). The widget never imports anything from Python.
 - The supervisor and the widget watch each other, so either one coming back brings the other back. A process started by Windows without a console never opens a window: children use `CREATE_NO_WINDOW`, and waits use process handles instead of polling.
 

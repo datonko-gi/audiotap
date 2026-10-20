@@ -17,13 +17,13 @@ if errorlevel 2 goto nopython
 
 powershell -NoProfile -ExecutionPolicy Bypass -Command ^
   "$pyw = (Get-Command pythonw.exe).Source; $s = New-Object -ComObject WScript.Shell;" ^
-  "$l = $s.CreateShortcut('%SUPLNK%'); $l.TargetPath = $pyw; $l.Arguments = '\"%HERE%app\supervisor.py\"'; $l.WorkingDirectory = '%HERE%app'; $l.WindowStyle = 7; $l.Save();" ^
-  "$l2 = $s.CreateShortcut('%WLNK%'); $l2.TargetPath = '%HERE%widget\AudioTapWidget.vbs'; $l2.WorkingDirectory = '%HERE%widget'; $l2.Save()"
+  "$l = $s.CreateShortcut($env:SUPLNK); $l.TargetPath = $pyw; $l.Arguments = '\"' + $env:HERE + 'app\supervisor.py\"'; $l.WorkingDirectory = $env:HERE + 'app'; $l.WindowStyle = 7; $l.Save();" ^
+  "$l2 = $s.CreateShortcut($env:WLNK); $l2.TargetPath = $env:HERE + 'widget\AudioTapWidget.vbs'; $l2.WorkingDirectory = $env:HERE + 'widget'; $l2.Save()"
 
 powershell -NoProfile -ExecutionPolicy Bypass -Command ^
   "$pyw = (Get-Command pythonw.exe).Source;" ^
   "$psi = New-Object System.Diagnostics.ProcessStartInfo; $psi.FileName = $pyw;" ^
-  "$psi.Arguments = '\"%HERE%app\supervisor.py\"'; $psi.UseShellExecute = $false; $psi.CreateNoWindow = $true;" ^
+  "$psi.Arguments = '\"' + $env:HERE + 'app\supervisor.py\"'; $psi.UseShellExecute = $false; $psi.CreateNoWindow = $true;" ^
   "[System.Diagnostics.Process]::Start($psi) | Out-Null"
 
 start "" wscript.exe "%HERE%widget\AudioTapWidget.vbs"

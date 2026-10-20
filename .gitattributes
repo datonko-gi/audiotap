@@ -1,0 +1,4 @@
+# Windows scripts must keep CRLF line endings, also in a "Download ZIP" archive
+*.ps1 text eol=crlf
+*.bat text eol=crlf
+*.vbs text eol=crlf
